@@ -15,6 +15,9 @@
     },
     "keywords": [],
     "author": "",
+    "engines": {
+        "node": ">=22.0.0"
+    },
     "license": "ISC",
     "dependencies": {
         "@prisma/adapter-pg": "^7.10.0",
