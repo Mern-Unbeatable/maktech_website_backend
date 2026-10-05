@@ -114,24 +114,27 @@ enum LeadStatus {
 // 4. ORDERS
 // ==========================================
 model Order {
-  id          String   @id @default(cuid())
-  orderNumber String   @unique
-  clientName  String
-  clientEmail String
-  amount      Float
-  status      OrderStatus @default(PENDING)
+  id           String   @id @default(cuid())
+  orderId      String   @unique
+  client       String
+  service      String
+  startDate    String
+  deliveryDate String
+  price        String
+  status       OrderStatus @default(PENDING)
+  assignedTeam String
+  notes        String?  @db.Text
   
-  // Optional relation to PricingPlan if order is tied to a plan
   planId      String?
   plan        PricingPlan? @relation(fields: [planId], references: [id])
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 enum OrderStatus {
   PENDING
-  PROCESSING
+  IN_PROGRESS
   COMPLETED
   CANCELLED
 }
@@ -342,5 +345,7 @@ model PlanFeature {
   planId     String
   plan       PricingPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
 }
+
+
 
 

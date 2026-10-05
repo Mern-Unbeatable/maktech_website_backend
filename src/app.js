@@ -2,6 +2,7 @@ import express from 'express';
 import config from './config/env.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { LeadModule } from './modules/leads/lead.module.js';
+import { orderModule } from './modules/orders/order.module.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.js';
 
 class App {
@@ -43,6 +44,7 @@ class App {
     
     this.app.use('/api/v1/auth', authModule.router);
     this.app.use('/api/v1/leads', leadModule.router);
+this.app.use('/api/v1/orders', orderModule.router);
   }
 
   initializeErrorHandling() {
