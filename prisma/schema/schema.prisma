@@ -84,14 +84,22 @@ model Lead {
   fullName    String
   companyName String?
   email       String
+  phone       String?
+  location    String?
   service     String?
   budget      Float?
   industry    String?
   message     String?  @db.Text
   status      LeadStatus @default(NEW)
+  source      LeadSource @default(WEBSITE)
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+enum LeadSource {
+  WEBSITE
+  MANUAL
 }
 
 enum LeadStatus {
@@ -334,3 +342,5 @@ model PlanFeature {
   planId     String
   plan       PricingPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
 }
+
+

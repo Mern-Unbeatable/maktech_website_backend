@@ -5,49 +5,182 @@
   },
   "item": [
     {
-      "name": "Auth",
+      "name": "Contact Form",
       "item": [
         {
-          "name": "Login Admin",
+          "name": "Submit Contact Form",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"admin123@MAKtechgroup.com\",\n    \"password\": \"admin123@MAKtechgroup\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
+              "raw": "{\n    \"fullName\": \"Client User\",\n    \"companyName\": \"Client Corp\",\n    \"email\": \"client@example.com\",\n    \"phone\": \"+8801700000000\",\n    \"service\": \"mern\",\n    \"budget\": 5000,\n    \"industry\": \"Technology\",\n    \"message\": \"I want to build a website\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/leads",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "leads"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          { "key": "token", "value": "{{token}}", "type": "string" }
+        ]
+      },
+      "item": [
+        {
+          "name": "Auth",
+          "item": [
+            {
+              "name": "Login Admin",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "var jsonData = pm.response.json();",
+                      "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+                      "    pm.collectionVariables.set('token', jsonData.data.token);",
+                      "    console.log('Token automatically saved!');",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"admin123@MAKtechgroup.com\",\n    \"password\": \"admin123@MAKtechgroup\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/auth/login",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "auth", "login"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Leads",
+          "item": [
+            {
+              "name": "Add New Lead (Admin)",
+              "request": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"fullName\": \"Manually Added Lead\",\n    \"companyName\": \"Offline Corp\",\n    \"email\": \"offline@example.com\",\n    \"phone\": \"01811223344\",\n    \"location\": \"Dhaka\",\n    \"source\": \"MANUAL\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/leads",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "leads"]
                 }
               }
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/auth/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "auth",
-                "login"
-              ]
+            {
+              "name": "Get All Leads",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/leads?page=1&limit=10&status=NEW",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "leads"],
+                  "query": [
+                    { "key": "page", "value": "1" },
+                    { "key": "limit", "value": "10" },
+                    { "key": "status", "value": "NEW" }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Get Single Lead",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/leads/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "leads", ":id"],
+                  "variable": [{ "key": "id", "value": "REPLACE_WITH_LEAD_ID" }]
+                }
+              }
+            },
+            {
+              "name": "Edit Lead Details (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"fullName\": \"Karim Ahmed\",\n    \"companyName\": \"Tech Solutions Ltd\",\n    \"email\": \"karim@techsolutions.com\",\n    \"phone\": \"+880 1712-345678\",\n    \"location\": \"Dhaka\",\n    \"source\": \"MANUAL\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/leads/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "leads", ":id"],
+                  "variable": [{ "key": "id", "value": "REPLACE_WITH_LEAD_ID" }]
+                }
+              }
+            },
+            {
+              "name": "Update Lead Status (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"status\": \"CONTACTED\"\n}",
+                  "options": { "raw": { "language": "json" } }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/leads/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "leads", ":id"],
+                  "variable": [{ "key": "id", "value": "REPLACE_WITH_LEAD_ID" }]
+                }
+              }
+            },
+            {
+              "name": "Delete Lead",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/leads/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "leads", ":id"],
+                  "variable": [{ "key": "id", "value": "REPLACE_WITH_LEAD_ID" }]
+                }
+              }
             }
-          }
+          ]
         }
       ]
     }
   ],
   "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:3000",
-      "type": "string"
-    }
+    { "key": "baseUrl", "value": "http://localhost:3000", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
   ]
 }
+
+
+

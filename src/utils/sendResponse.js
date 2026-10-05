@@ -3,9 +3,12 @@ export const sendResponse = (res, data) => {
     statusCode: data.statusCode,
     success: data.success,
     message: data.message || null,
-    meta: data.meta || null,
     data: data.data || null,
   };
+
+  if (data.meta !== undefined && data.meta !== null) {
+    responseData.meta = data.meta;
+  }
 
   res.status(data.statusCode).json(responseData);
 };

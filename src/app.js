@@ -1,6 +1,7 @@
 import express from 'express';
 import config from './config/env.js';
 import { AuthModule } from './modules/auth/auth.module.js';
+import { LeadModule } from './modules/lead/lead.module.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.js';
 
 class App {
@@ -38,7 +39,10 @@ class App {
 
     // Feature Modules
     const authModule = new AuthModule();
+    const leadModule = new LeadModule();
+    
     this.app.use('/api/v1/auth', authModule.router);
+    this.app.use('/api/v1/leads', leadModule.router);
   }
 
   initializeErrorHandling() {

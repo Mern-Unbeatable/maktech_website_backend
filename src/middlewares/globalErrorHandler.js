@@ -9,9 +9,10 @@ export const globalErrorHandler = (err, req, res, next) => {
   if (err.name === 'ZodError') {
     statusCode = httpStatus.BAD_REQUEST;
     message = 'Validation Error';
-    errorMessages = err.errors.map((issue) => {
+    const issues = err.issues || err.errors || [];
+    errorMessages = issues.map((issue) => {
       return {
-        path: issue.path.join('.'),
+        path: issue.path ? issue.path.join('.') : '',
         message: issue.message,
       };
     });
