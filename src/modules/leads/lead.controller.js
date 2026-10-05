@@ -39,6 +39,17 @@ export class LeadController {
     });
   });
 
+  getLeadStats = catchAsync(async (req, res) => {
+    const result = await this.leadService.getLeadStats();
+    
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Lead stats fetched successfully!',
+      data: result
+    });
+  });
+
   getLeadById = catchAsync(async (req, res) => {
     const result = await this.leadService.getLeadById(req.params.id);
     
@@ -72,4 +83,5 @@ export class LeadController {
     });
   });
 }
+
 

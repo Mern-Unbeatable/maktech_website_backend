@@ -1,7 +1,7 @@
 import express from 'express';
 import config from './config/env.js';
 import { AuthModule } from './modules/auth/auth.module.js';
-import { LeadModule } from './modules/lead/lead.module.js';
+import { LeadModule } from './modules/leads/lead.module.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.js';
 
 class App {

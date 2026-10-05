@@ -32,6 +32,13 @@ export class LeadModule {
       this.leadController.getAllLeads
     );
 
+    // Stats route MUST be before /:id route
+    this.router.get(
+      '/stats',
+      auth('ADMIN'),
+      this.leadController.getLeadStats
+    );
+
     this.router.get(
       '/:id',
       auth('ADMIN'),
@@ -59,5 +66,6 @@ export class LeadModule {
     );
   }
 }
+
 
 

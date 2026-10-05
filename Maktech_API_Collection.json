@@ -76,6 +76,18 @@
           "name": "Leads",
           "item": [
             {
+              "name": "Get Lead Statistics",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/leads/stats",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "v1", "leads", "stats"]
+                }
+              }
+            },
+            {
               "name": "Add New Lead (Admin)",
               "request": {
                 "method": "POST",
@@ -181,6 +193,7 @@
     { "key": "token", "value": "", "type": "string" }
   ]
 }
+
 
 
 
