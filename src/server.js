@@ -5,7 +5,7 @@ import config from './config/env.js';
 const PORT = config.app.port;
 
 // Start server
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${config.app.env}`);
   console.log(`Health check available at: http://localhost:${PORT}/health`);
@@ -37,3 +37,4 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 export default server;
+

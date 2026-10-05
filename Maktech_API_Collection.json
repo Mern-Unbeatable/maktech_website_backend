@@ -94,7 +94,7 @@
                 "header": [{ "key": "Content-Type", "value": "application/json" }],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"fullName\": \"Manually Added Lead\",\n    \"companyName\": \"Offline Corp\",\n    \"email\": \"offline@example.com\",\n    \"phone\": \"01811223344\",\n    \"location\": \"Dhaka\",\n    \"source\": \"MANUAL\"\n}",
+                  "raw": "{\n    \"fullName\": \"Manually Added Lead\",\n    \"companyName\": \"Offline Corp\",\n    \"email\": \"offline@example.com\",\n    \"phone\": \"01811223344\",\n    \"location\": \"Dhaka\"\n}",
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": {
@@ -141,7 +141,7 @@
                 "header": [{ "key": "Content-Type", "value": "application/json" }],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"fullName\": \"Karim Ahmed\",\n    \"companyName\": \"Tech Solutions Ltd\",\n    \"email\": \"karim@techsolutions.com\",\n    \"phone\": \"+880 1712-345678\",\n    \"location\": \"Dhaka\",\n    \"source\": \"MANUAL\"\n}",
+                  "raw": "{\n    \"fullName\": \"Karim Ahmed\",\n    \"companyName\": \"Tech Solutions Ltd\",\n    \"email\": \"karim@techsolutions.com\",\n    \"phone\": \"+880 1712-345678\",\n    \"location\": \"Dhaka\"\n}",
                   "options": { "raw": { "language": "json" } }
                 },
                 "url": {
@@ -193,7 +193,3 @@
     { "key": "token", "value": "", "type": "string" }
   ]
 }
-
-
-
-
