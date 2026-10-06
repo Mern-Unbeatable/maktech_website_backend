@@ -699,6 +699,161 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Blogs",
+                    "item": [
+                        {
+                            "name": "Create Blog",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"title\": \"Why React is the Future\",\n    \"category\": \"Web Development\",\n    \"date\": \"06-10-2026\",\n    \"postedBy\": \"Joni\",\n    \"keyTakeaways\": \"<ul><li>Component based architecture</li><li>Virtual DOM</li></ul>\",\n    \"blogContent\": \"<p>React makes it easy to build UI...</p>\",\n    \"coverImage\": \"http://127.0.0.1:3000/uploads/dummy-blog.jpg\",\n    \"content\": \"<h1>Project Overview</h1><p>Detailed description...</p><audio src='http://127.0.0.1:3000/uploads/1791266492384-343495189.mpga' controls>Your browser does not support the audio element.</audio>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/blogs",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "blogs"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get All Blogs",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/blogs",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "blogs"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get Blog By ID",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/blogs/:id",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "blogs",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": "BLOG_ID_HERE"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Update Blog",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"title\": \"Why React is the Future (Updated)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/blogs/:id",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "blogs",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": "BLOG_ID_HERE"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Delete Blog",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/blogs/:id",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "blogs",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": "BLOG_ID_HERE"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         }

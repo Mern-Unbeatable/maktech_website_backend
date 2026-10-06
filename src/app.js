@@ -1,10 +1,11 @@
 import express from 'express';
 import config from './config/env.js';
 import { AuthModule } from './modules/auth/auth.module.js';
-import { LeadModule } from './modules/leads/lead.module.js';
-import { orderModule } from './modules/orders/order.module.js';
-import { CaseStudyModule } from './modules/case-study/case-study.module.js';
-import { UploadModule } from './modules/upload/upload.module.js';
+import { LeadsModule } from './modules/leads/leads.module.js';
+import { ordersModule } from './modules/orders/orders.module.js';
+import { CaseStudyModule } from './modules/case-studies/case-studies.module.js';
+import { UploadModule } from './modules/uploads/uploads.module.js';
+import { blogModule } from './modules/blogs/blogs.module.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.js';
 
 class App {
@@ -45,15 +46,16 @@ class App {
 
     // Feature Modules
     const authModule = new AuthModule();
-    const leadModule = new LeadModule();
+    const leadsModule = new LeadsModule();
     const caseStudyModule = new CaseStudyModule();
     const uploadModule = new UploadModule();
     
     this.app.use('/api/v1/auth', authModule.router);
-    this.app.use('/api/v1/leads', leadModule.router);
-    this.app.use('/api/v1/orders', orderModule.router);
+    this.app.use('/api/v1/leads', leadsModule.router);
+    this.app.use('/api/v1/orders', ordersModule.router);
     this.app.use('/api/v1/case-studies', caseStudyModule.router);
     this.app.use('/api/v1/uploads', uploadModule.router);
+    this.app.use('/api/v1/blogs', blogModule.router);
   }
 
   initializeErrorHandling() {

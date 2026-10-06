@@ -2,7 +2,7 @@ import { prisma } from '../../config/db.js';
 import { ApiError } from '../../utils/ApiError.js';
 import { httpStatus } from '../../utils/httpStatus.js';
 
-export class LeadService {
+export class LeadsService {
   constructor() {
     this.prisma = prisma;
   }
@@ -52,7 +52,7 @@ export class LeadService {
     };
   }
 
-  async getLeadStats() {
+  async getLeadsStats() {
     const totalLeads = await this.prisma.lead.count();
     
     // Dates for this week and last week
@@ -106,7 +106,7 @@ export class LeadService {
     };
   }
 
-  async getLeadById(id) {
+  async getLeadsById(id) {
     const lead = await this.prisma.lead.findUnique({
       where: { id }
     });
@@ -119,7 +119,7 @@ export class LeadService {
 
   async updateLead(id, data) {
     // Check if exists
-    await this.getLeadById(id);
+    await this.getLeadsById(id);
     
     return await this.prisma.lead.update({
       where: { id },
@@ -129,7 +129,7 @@ export class LeadService {
 
   async deleteLead(id) {
     // Check if exists
-    await this.getLeadById(id);
+    await this.getLeadsById(id);
     
     return await this.prisma.lead.delete({
       where: { id }

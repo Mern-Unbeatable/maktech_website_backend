@@ -3,15 +3,15 @@ import { sendResponse } from '../../utils/sendResponse.js';
 import { httpStatus } from '../../utils/httpStatus.js';
 import { calculatePagination } from '../../utils/paginationHelper.js';
 
-export class LeadController {
-  constructor(leadService) {
-    this.leadService = leadService;
+export class LeadsController {
+  constructor(leadsService) {
+    this.leadsService = leadsService;
   }
 
   createLead = catchAsync(async (req, res) => {
     const source = req.user ? 'MANUAL' : 'WEBSITE';
-    const leadData = { ...req.body, source };
-    const result = await this.leadService.createLead(leadData);
+    const leadsData = { ...req.body, source };
+    const result = await this.leadsService.createLead(leadsData);
     
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
@@ -28,7 +28,7 @@ export class LeadController {
       status: req.query.status
     };
 
-    const result = await this.leadService.getAllLeads(paginationOptions, filters);
+    const result = await this.leadsService.getAllLeads(paginationOptions, filters);
     
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -39,8 +39,8 @@ export class LeadController {
     });
   });
 
-  getLeadStats = catchAsync(async (req, res) => {
-    const result = await this.leadService.getLeadStats();
+  getLeadsStats = catchAsync(async (req, res) => {
+    const result = await this.leadsService.getLeadsStats();
     
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -50,8 +50,8 @@ export class LeadController {
     });
   });
 
-  getLeadById = catchAsync(async (req, res) => {
-    const result = await this.leadService.getLeadById(req.params.id);
+  getLeadsById = catchAsync(async (req, res) => {
+    const result = await this.leadsService.getLeadsById(req.params.id);
     
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -62,7 +62,7 @@ export class LeadController {
   });
 
   updateLead = catchAsync(async (req, res) => {
-    const result = await this.leadService.updateLead(req.params.id, req.body);
+    const result = await this.leadsService.updateLead(req.params.id, req.body);
     
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -73,7 +73,7 @@ export class LeadController {
   });
 
   deleteLead = catchAsync(async (req, res) => {
-    await this.leadService.deleteLead(req.params.id);
+    await this.leadsService.deleteLead(req.params.id);
     
     sendResponse(res, {
       statusCode: httpStatus.OK,

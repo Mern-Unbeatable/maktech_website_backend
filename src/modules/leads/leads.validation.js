@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-export class LeadValidation {
-  static createLeadSchema = z.object({
+export class LeadsValidation {
+  static createLeadsSchema = z.object({
     fullName: z.string().min(2, 'Full name must be at least 2 characters'),
     companyName: z.string().optional(),
     email: z.string().email('Invalid email address'),
@@ -14,7 +14,7 @@ export class LeadValidation {
     
   });
 
-  static updateLeadSchema = z.object({
+  static updateLeadsSchema = z.object({
     status: z.enum(['NEW', 'CONTACTED', 'IN_PROGRESS', 'CONVERTED', 'LOST']).optional(),
     fullName: z.string().min(2).optional(),
     companyName: z.string().optional(),

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-export class OrderValidation {
-  static createOrderSchema = z.object({
+export class OrdersValidation {
+  static createOrdersSchema = z.object({
     client: z.string({ required_error: 'Client name is required' }),
     service: z.string({ required_error: 'Service name is required' }),
     startDate: z.string({ required_error: 'Start date is required' }),
@@ -12,7 +12,7 @@ export class OrderValidation {
     status: z.enum(['PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).optional(),
   });
 
-  static updateOrderSchema = z.object({
+  static updateOrdersSchema = z.object({
     client: z.string().optional(),
     service: z.string().optional(),
     startDate: z.string().optional(),

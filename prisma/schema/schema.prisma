@@ -182,24 +182,28 @@ model Service {
 // 6. BLOG
 // ==========================================
 model Post {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  excerpt     String?  @db.Text
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  category     String?
+  date         String?
+  postedBy     String?
+  keyTakeaways String?  @db.Text
+  blogContent  String?  @db.Text
   
-  // Using JSON for Rich Text Editor block data
-  content     Json?
+  // Using JSON for dynamic Attachments / Assets grid
+  content      Json?
   
-  coverImage  String?
-  isPublished Boolean  @default(false)
+  coverImage   String?
+  isPublished  Boolean  @default(false)
   
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id])
+  authorId     String?
+  author       User?    @relation(fields: [authorId], references: [id])
   
-  tags        PostTag[] // Bridge relation
+  tags         PostTag[] // Bridge relation
   
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Tag {

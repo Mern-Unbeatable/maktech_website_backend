@@ -2,7 +2,7 @@ import { PrismaClient } from '../../generated/prisma/index.js';
 import { prisma } from '../../config/db.js';
 import { ApiError } from '../../utils/ApiError.js';
 
-class OrderService {
+class OrdersService {
   constructor() {
     this.prisma = prisma;
   }
@@ -76,7 +76,7 @@ class OrderService {
     };
   }
 
-  async getOrderById(id) {
+  async getOrdersById(id) {
     const result = await this.prisma.order.findUnique({
       where: { id }
     });
@@ -106,4 +106,4 @@ class OrderService {
   }
 }
 
-export default OrderService;
+export default OrdersService;

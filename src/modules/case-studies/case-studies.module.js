@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { CaseStudyController } from './case-study.controller.js';
-import { CaseStudyService } from './case-study.service.js';
-import { CaseStudyValidation } from './case-study.validation.js';
+import { CaseStudyController } from './case-studies.controller.js';
+import { CaseStudyService } from './case-studies.service.js';
+import { CaseStudyValidation } from './case-studies.validation.js';
 import { auth } from '../../middlewares/auth.js';
 
 export class CaseStudyModule {

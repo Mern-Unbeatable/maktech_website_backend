@@ -3,13 +3,13 @@ import { sendResponse } from '../../utils/sendResponse.js';
 import { httpStatus } from '../../utils/httpStatus.js';
 import { calculatePagination } from '../../utils/paginationHelper.js';
 
-export class OrderController {
-  constructor(orderService) {
-    this.orderService = orderService;
+export class OrdersController {
+  constructor(ordersService) {
+    this.ordersService = ordersService;
   }
 
   createOrder = catchAsync(async (req, res) => {
-    const result = await this.orderService.createOrder(req.body);
+    const result = await this.ordersService.createOrder(req.body);
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
@@ -25,7 +25,7 @@ export class OrderController {
     };
     const options = calculatePagination(req.query);
 
-    const result = await this.orderService.getAllOrders(filters, options);
+    const result = await this.ordersService.getAllOrders(filters, options);
 
     // Make sure data is before meta in response as requested previously
     res.status(httpStatus.OK).json({
@@ -37,9 +37,9 @@ export class OrderController {
     });
   });
 
-  getOrderById = catchAsync(async (req, res) => {
+  getOrdersById = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await this.orderService.getOrderById(id);
+    const result = await this.ordersService.getOrdersById(id);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -51,7 +51,7 @@ export class OrderController {
 
   updateOrder = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await this.orderService.updateOrder(id, req.body);
+    const result = await this.ordersService.updateOrder(id, req.body);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -63,7 +63,7 @@ export class OrderController {
 
   deleteOrder = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await this.orderService.deleteOrder(id);
+    const result = await this.ordersService.deleteOrder(id);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
