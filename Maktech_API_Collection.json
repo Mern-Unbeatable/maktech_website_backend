@@ -496,7 +496,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"title\": \"E-commerce Platform\",\n    \"category\": \"Web Development\",\n    \"description\": \"Built a complete e-commerce solution.\",\n    \"client\": \"Fashion House BD\",\n    \"result\": \"300% increase in sales\",\n    \"image\": \"https://example.com/image.jpg\",\n    \"content\": \"<h1>Project Overview</h1><p>Detailed description...</p>\"\n}",
+                                    "raw": "{\n    \"title\": \"E-commerce Platform\",\n    \"category\": \"Web Development\",\n    \"client\": \"Fashion House BD\",\n    \"timeline\": \"14 Weeks\",\n    \"services\": \"International IT Product & Services\",\n    \"tags\": \"ecommerce, web, react\",\n    \"description\": \"Built a complete e-commerce solution with advanced features.\",\n    \"coverImage\": \"http://127.0.0.1:3000/uploads/dummy-image.jpg\",\n    \"content\": \"<h1>Project Overview</h1><p>Detailed description...</p><audio src='http://127.0.0.1:3000/uploads/1791266492384-343495189.mpga' controls>Your browser does not support the audio element.</audio>\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -573,7 +573,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Updated E-commerce Platform\",\n    \"result\": \"500% increase in sales\",\n    \"content\": \"<h1>Updated Content</h1>\"\n}",
+                                    "raw": "{\n    \"title\": \"Updated E-commerce Platform\",\n    \"category\": \"Web Development\",\n    \"client\": \"Fashion House BD\",\n    \"timeline\": \"14 Weeks\",\n    \"services\": \"International IT Product & Services\",\n    \"tags\": \"ecommerce, web, react\",\n    \"description\": \"Built a complete e-commerce solution with advanced features.\",\n    \"coverImage\": \"http://127.0.0.1:3000/uploads/dummy-image.jpg\",\n    \"content\": \"<h1>Project Overview</h1><p>Detailed description...</p><audio src='http://127.0.0.1:3000/uploads/1791266492384-343495189.mpga' controls>Your browser does not support the audio element.</audio>\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -667,6 +667,36 @@
                                     ]
                                 }
                             }
+                        },
+                        {
+                            "name": "Delete Uploaded Image",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/uploads/:filename",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "uploads",
+                                        ":filename"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "filename",
+                                            "value": "16912345678-123456.jpg"
+                                        }
+                                    ]
+                                }
+                            }
                         }
                     ]
                 }
@@ -676,7 +706,7 @@
     "variable": [
         {
             "key": "baseUrl",
-            "value": "http://localhost:3000",
+            "value": "http://127.0.0.1:3000",
             "type": "string"
         },
         {

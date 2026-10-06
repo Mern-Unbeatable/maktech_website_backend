@@ -11,8 +11,6 @@ export class CaseStudyValidation {
       timeline: z.string().optional(),
       services: z.string().optional(),
       tags: z.string().optional(),
-      result: z.string().optional(),
-      image: z.string().url('Invalid image URL').optional().or(z.literal('')),
       coverImage: z.string().url('Invalid image URL').optional().or(z.literal('')),
       slug: z.string().optional(),
       content: z.any().optional(),
@@ -29,8 +27,6 @@ export class CaseStudyValidation {
       timeline: z.string().optional(),
       services: z.string().optional(),
       tags: z.string().optional(),
-      result: z.string().optional(),
-      image: z.string().url('Invalid image URL').optional().or(z.literal('')),
       coverImage: z.string().url('Invalid image URL').optional().or(z.literal('')),
       slug: z.string().optional(),
       content: z.any().optional(),
@@ -41,11 +37,16 @@ export class CaseStudyValidation {
   static validate(schema) {
     return async (req, res, next) => {
       try {
-        await schema.parseAsync({
+        const parsedData = await schema.parseAsync({
           body: req.body,
           query: req.query,
           params: req.params,
         });
+        
+        if (parsedData.body) req.body = parsedData.body;
+        
+        // We do not reassign req.query or req.params as they are read-only getters in Express
+        // and we only care about stripping the body in this context.
         next();
       } catch (error) {
         if (error instanceof z.ZodError) {

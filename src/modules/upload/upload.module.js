@@ -18,5 +18,12 @@ export class UploadModule {
       upload.single('image'),
       this.uploadController.uploadFile
     );
+
+    // Route for deleting uploaded files
+    this.router.delete(
+      '/:filename',
+      auth('ADMIN'),
+      this.uploadController.deleteFile
+    );
   }
 }
