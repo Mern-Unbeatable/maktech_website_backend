@@ -25,8 +25,11 @@
         "bcryptjs": "^3.0.3",
         "dotenv": "^17.4.2",
         "express": "5.2.1",
+        "imap-simple": "^5.1.0",
         "jsonwebtoken": "^9.0.3",
+        "mailparser": "^3.9.36",
         "multer": "^2.4.0",
+        "nodemailer": "^10.0.15",
         "pg": "^8.23.1",
         "prisma": "^7.10.0",
         "zod": "^4.6.5"

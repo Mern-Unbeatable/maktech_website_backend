@@ -1271,6 +1271,72 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Emails",
+                    "item": [
+                        {
+                            "name": "Send Email",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"to\": \"customer@example.com\",\n    \"subject\": \"Hello from Maktech\",\n    \"html\": \"<p>Thank you for your order.</p>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/emails/send",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "emails",
+                                        "send"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get Inbox",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/emails/inbox",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "emails",
+                                        "inbox"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         }

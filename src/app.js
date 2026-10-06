@@ -9,6 +9,7 @@ import { blogModule } from './modules/blogs/blogs.module.js';
 import { jobsModule } from './modules/jobs/jobs.module.js';
 import { pricingModule } from './modules/pricing/pricing.module.js';
 import { dashboardModule } from './modules/dashboard/dashboard.module.js';
+import { emailsModule } from './modules/emails/emails.module.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.js';
 
 class App {
@@ -62,6 +63,7 @@ class App {
     this.app.use('/api/v1/jobs', jobsModule.router);
     this.app.use('/api/v1/pricing', pricingModule.router);
     this.app.use('/api/v1/dashboard', dashboardModule.router);
+    this.app.use('/api/v1/emails', emailsModule.router);
   }
 
   initializeErrorHandling() {
