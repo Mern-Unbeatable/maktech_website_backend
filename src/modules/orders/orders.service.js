@@ -104,6 +104,40 @@ class OrdersService {
     });
     return result;
   }
+
+  async getOrdersStats() {
+    const totalOrders = await this.prisma.order.count();
+    
+    const inProgress = await this.prisma.order.count({
+      where: { status: 'IN_PROGRESS' }
+    });
+    
+    const delivered = await this.prisma.order.count({
+      where: { status: 'COMPLETED' } // Assuming COMPLETED corresponds to Delivered
+    });
+
+    const allOrders = await this.prisma.order.findMany({
+      select: { price: true }
+    });
+
+    let totalRevenue = 0;
+    allOrders.forEach(order => {
+      if (order.price) {
+        // Remove non-numeric characters (like $, commas) and parse
+        const numericPrice = parseFloat(order.price.replace(/[^0-9.-]+/g, ""));
+        if (!isNaN(numericPrice)) {
+          totalRevenue += numericPrice;
+        }
+      }
+    });
+
+    return {
+      totalOrders,
+      inProgress,
+      delivered,
+      totalRevenue
+    };
+  }
 }
 
 export default OrdersService;

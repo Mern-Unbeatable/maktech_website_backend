@@ -20,6 +20,7 @@ router.get(
   ordersController.getAllOrders
 );
 
+router.get('/stats', ordersController.getOrdersStats);
 router.get('/:id', ordersController.getOrdersById);
 
 router.patch(

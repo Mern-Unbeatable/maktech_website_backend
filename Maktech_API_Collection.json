@@ -327,6 +327,24 @@
                     "name": "Orders",
                     "item": [
                         {
+                            "name": "Get Orders Statistics",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/orders/stats",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "orders",
+                                        "stats"
+                                    ]
+                                }
+                            }
+                        },
+                        {
                             "name": "Get All Orders",
                             "request": {
                                 "method": "GET",
@@ -1219,6 +1237,35 @@
                                             "key": "id",
                                             "value": "PLAN_ID_HERE"
                                         }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Dashboard",
+                    "item": [
+                        {
+                            "name": "Get Dashboard Summary",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/dashboard/summary",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "dashboard",
+                                        "summary"
                                     ]
                                 }
                             }

@@ -18,6 +18,16 @@ export class OrdersController {
     });
   });
 
+  getOrdersStats = catchAsync(async (req, res) => {
+    const result = await this.ordersService.getOrdersStats();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Orders statistics retrieved successfully',
+      data: result
+    });
+  });
+
   getAllOrders = catchAsync(async (req, res) => {
     const filters = {
       searchTerm: req.query.searchTerm,
