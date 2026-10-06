@@ -6,6 +6,7 @@ import { ordersModule } from './modules/orders/orders.module.js';
 import { CaseStudyModule } from './modules/case-studies/case-studies.module.js';
 import { UploadModule } from './modules/uploads/uploads.module.js';
 import { blogModule } from './modules/blogs/blogs.module.js';
+import { jobsModule } from './modules/jobs/jobs.module.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.js';
 
 class App {
@@ -56,6 +57,7 @@ class App {
     this.app.use('/api/v1/case-studies', caseStudyModule.router);
     this.app.use('/api/v1/uploads', uploadModule.router);
     this.app.use('/api/v1/blogs', blogModule.router);
+    this.app.use('/api/v1/jobs', jobsModule.router);
   }
 
   initializeErrorHandling() {

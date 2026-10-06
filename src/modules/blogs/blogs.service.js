@@ -58,7 +58,10 @@ class BlogService {
       meta: {
         page,
         limit,
-        total
+        total,
+        totalPages: Math.ceil(total / limit),
+        hasNext: page < Math.ceil(total / limit),
+        hasPrevious: page > 1
       },
       data: blogs
     };

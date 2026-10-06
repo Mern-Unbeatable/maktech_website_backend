@@ -167,7 +167,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "{{baseUrl}}/api/v1/leads?page=1&limit=10&status=NEW",
+                                    "raw": "{{baseUrl}}/api/v1/leads?page=1&limit=10&searchTerm=",
                                     "host": [
                                         "{{baseUrl}}"
                                     ],
@@ -186,8 +186,8 @@
                                             "value": "10"
                                         },
                                         {
-                                            "key": "status",
-                                            "value": "NEW"
+                                            "key": "searchTerm",
+                                            "value": ""
                                         }
                                     ]
                                 }
@@ -332,7 +332,7 @@
                                 "method": "GET",
                                 "header": [],
                                 "url": {
-                                    "raw": "{{baseUrl}}/api/v1/orders?page=1&limit=10",
+                                    "raw": "{{baseUrl}}/api/v1/orders?page=1&limit=10&searchTerm=",
                                     "host": [
                                         "{{baseUrl}}"
                                     ],
@@ -349,6 +349,10 @@
                                         {
                                             "key": "limit",
                                             "value": "10"
+                                        },
+                                        {
+                                            "key": "searchTerm",
+                                            "value": ""
                                         }
                                     ]
                                 }
@@ -521,7 +525,7 @@
                             "request": {
                                 "method": "GET",
                                 "url": {
-                                    "raw": "{{baseUrl}}/api/v1/case-studies",
+                                    "raw": "{{baseUrl}}/api/v1/case-studies?page=1&limit=10&searchTerm=",
                                     "host": [
                                         "{{baseUrl}}"
                                     ],
@@ -529,6 +533,20 @@
                                         "api",
                                         "v1",
                                         "case-studies"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "1"
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "10"
+                                        },
+                                        {
+                                            "key": "searchTerm",
+                                            "value": ""
+                                        }
                                     ]
                                 }
                             }
@@ -744,7 +762,7 @@
                             "request": {
                                 "method": "GET",
                                 "url": {
-                                    "raw": "{{baseUrl}}/api/v1/blogs",
+                                    "raw": "{{baseUrl}}/api/v1/blogs?page=1&limit=10&searchTerm=",
                                     "host": [
                                         "{{baseUrl}}"
                                     ],
@@ -752,6 +770,20 @@
                                         "api",
                                         "v1",
                                         "blogs"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "1"
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "10"
+                                        },
+                                        {
+                                            "key": "searchTerm",
+                                            "value": ""
+                                        }
                                     ]
                                 }
                             }
@@ -848,6 +880,175 @@
                                         {
                                             "key": "id",
                                             "value": "BLOG_ID_HERE"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Jobs",
+                    "item": [
+                        {
+                            "name": "Create Job",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"title\": \"Product Designer\",\n    \"description\": \"Design products that shape the future of work.\",\n    \"department\": \"Product & Design\",\n    \"vacancy\": 1,\n    \"salary\": \"Negotiable\",\n    \"coverImage\": \"http://127.0.0.1:3000/uploads/dummy-job.jpg\",\n    \"jobTypes\": [\n        {\n            \"title\": \"Full-time role\",\n            \"description\": \"Standard 40 hours/week\"\n        }\n    ],\n    \"responsibilities\": [\n        {\n            \"title\": \"Creative direction\",\n            \"description\": \"Lead the design vision\"\n        }\n    ],\n    \"benefits\": [\n        {\n            \"title\": \"Flexible hours\",\n            \"description\": \"Work when you are most productive\"\n        }\n    ],\n    \"questions\": [\n        {\n            \"title\": \"1. Tell us about yourself.\",\n            \"type\": \"Paragraph\",\n            \"isRequired\": true,\n            \"order\": 1\n        },\n        {\n            \"title\": \"2. What is your expected salary?\",\n            \"type\": \"Short answer\",\n            \"isRequired\": true,\n            \"order\": 2\n        },\n        {\n            \"title\": \"3. Which framework are you most comfortable with?\",\n            \"type\": \"Multiple Choice\",\n            \"isRequired\": true,\n            \"order\": 3,\n            \"options\": [\n                {\n                    \"value\": \"React\",\n                    \"order\": 1\n                },\n                {\n                    \"value\": \"Vue\",\n                    \"order\": 2\n                },\n                {\n                    \"value\": \"Angular\",\n                    \"order\": 3\n                }\n            ]\n        },\n        {\n            \"title\": \"4. Select all languages you know.\",\n            \"type\": \"Checkboxes\",\n            \"isRequired\": false,\n            \"order\": 4,\n            \"options\": [\n                {\n                    \"value\": \"JavaScript\",\n                    \"order\": 1\n                },\n                {\n                    \"value\": \"TypeScript\",\n                    \"order\": 2\n                },\n                {\n                    \"value\": \"Python\",\n                    \"order\": 3\n                }\n            ]\n        },\n        {\n            \"title\": \"5. What is your highest education level?\",\n            \"type\": \"Dropdown\",\n            \"isRequired\": true,\n            \"order\": 5,\n            \"options\": [\n                {\n                    \"value\": \"Bachelor's\",\n                    \"order\": 1\n                },\n                {\n                    \"value\": \"Master's\",\n                    \"order\": 2\n                },\n                {\n                    \"value\": \"PhD\",\n                    \"order\": 3\n                }\n            ]\n        },\n        {\n            \"title\": \"6. Upload your Resume/CV.\",\n            \"type\": \"File upload\",\n            \"isRequired\": true,\n            \"order\": 6\n        },\n        {\n            \"title\": \"7. Rate your CSS skills (1 to 5).\",\n            \"type\": \"Linear scale\",\n            \"isRequired\": true,\n            \"order\": 7\n        },\n        {\n            \"title\": \"8. When can you join?\",\n            \"type\": \"Date\",\n            \"isRequired\": true,\n            \"order\": 8\n        },\n        {\n            \"title\": \"9. Preferred interview time?\",\n            \"type\": \"Time\",\n            \"isRequired\": false,\n            \"order\": 9\n        },\n        {\n            \"title\": \"10. What is your Email address?\",\n            \"type\": \"Email\",\n            \"isRequired\": true,\n            \"order\": 10\n        },\n        {\n            \"title\": \"11. Phone Number?\",\n            \"type\": \"Phone Number\",\n            \"isRequired\": true,\n            \"order\": 11\n        },\n        {\n            \"title\": \"12. Link to your Portfolio/GitHub.\",\n            \"type\": \"URL\",\n            \"isRequired\": false,\n            \"order\": 12\n        },\n        {\n            \"title\": \"13. Are you willing to relocate?\",\n            \"type\": \"Yes/No\",\n            \"isRequired\": true,\n            \"order\": 13,\n            \"options\": [\n                {\n                    \"value\": \"Yes\",\n                    \"order\": 1\n                },\n                {\n                    \"value\": \"No\",\n                    \"order\": 2\n                }\n            ]\n        },\n        {\n            \"title\": \"14. Describe a challenging bug you fixed.\",\n            \"type\": \"Paragraph\",\n            \"isRequired\": false,\n            \"order\": 14\n        }\n    ]\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/jobs",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "jobs"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get All Jobs",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/jobs?page=1&limit=10&searchTerm=",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "jobs"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "1"
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "10"
+                                        },
+                                        {
+                                            "key": "searchTerm",
+                                            "value": ""
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get Job By ID",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/jobs/:id",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "jobs",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": "JOB_ID_HERE"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Update Job",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"title\": \"Senior Product Designer\",\n    \"salary\": \"$120k - $150k\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/jobs/:id",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "jobs",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": "JOB_ID_HERE"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Delete Job",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{baseUrl}}/api/v1/jobs/:id",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "jobs",
+                                        ":id"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "id",
+                                            "value": "JOB_ID_HERE"
                                         }
                                     ]
                                 }
