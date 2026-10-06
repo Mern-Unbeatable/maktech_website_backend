@@ -24,6 +24,7 @@ export class DashboardService {
     // 2. Process Orders Data
     let lifetimeRevenue = 0;
     let monthlyRevenue = 0;
+    let lastMonthRevenue = 0;
     const activeClientsSet = new Set();
     
     const now = new Date();
@@ -58,9 +59,16 @@ export class DashboardService {
 
       const orderDate = new Date(order.createdAt);
       
-      // Calculate Monthly Revenue for current month
-      if (orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear) {
-        monthlyRevenue += numericPrice;
+      // Calculate Monthly Revenue for current month and last month
+      if (orderDate.getFullYear() === currentYear) {
+        if (orderDate.getMonth() === currentMonth) {
+          monthlyRevenue += numericPrice;
+        } else if (orderDate.getMonth() === currentMonth - 1 || (currentMonth === 0 && orderDate.getMonth() === 11 && orderDate.getFullYear() === currentYear - 1)) {
+          // Handles January (currentMonth = 0) rolling back to December of previous year
+          lastMonthRevenue += numericPrice;
+        }
+      } else if (currentMonth === 0 && orderDate.getFullYear() === currentYear - 1 && orderDate.getMonth() === 11) {
+        lastMonthRevenue += numericPrice;
       }
 
       // Populate Revenue Performance Chart (by month)
@@ -96,7 +104,16 @@ export class DashboardService {
       }
     });
 
-    // 4. Format Charts Array
+    // 4. Calculate Growth
+    let revenueGrowth = 0;
+    if (lastMonthRevenue > 0) {
+      revenueGrowth = ((monthlyRevenue - lastMonthRevenue) / lastMonthRevenue) * 100;
+    } else if (monthlyRevenue > 0) {
+      revenueGrowth = 100; // If last month was 0 but this month has revenue
+    }
+    const growthString = revenueGrowth >= 0 ? `+${revenueGrowth.toFixed(1)}%` : `${revenueGrowth.toFixed(1)}%`;
+
+    // 5. Format Charts Array
     const revenuePerformance = Object.keys(monthlyRevenueMap).map(month => ({
       month,
       revenue: monthlyRevenueMap[month]
@@ -107,12 +124,12 @@ export class DashboardService {
       orders: orderVolumeMap[day]
     }));
 
-    // 5. Construct highly-tailored API Response
+    // 6. Construct highly-tailored API Response
     return {
       summary: {
         monthlyRevenue: {
           value: monthlyRevenue,
-          growth: "+12.5%" // Mocked growth percentage for now
+          growth: growthString
         },
         lifetimeRevenue: {
           value: lifetimeRevenue
