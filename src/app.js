@@ -3,6 +3,8 @@ import config from './config/env.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { LeadModule } from './modules/leads/lead.module.js';
 import { orderModule } from './modules/orders/order.module.js';
+import { CaseStudyModule } from './modules/case-study/case-study.module.js';
+import { UploadModule } from './modules/upload/upload.module.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.js';
 
 class App {
@@ -17,6 +19,9 @@ class App {
   initializeMiddlewares() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+    
+    // Serve uploaded files statically
+    this.app.use('/uploads', express.static('uploads'));
   }
 
   initializeModules() {
@@ -41,10 +46,14 @@ class App {
     // Feature Modules
     const authModule = new AuthModule();
     const leadModule = new LeadModule();
+    const caseStudyModule = new CaseStudyModule();
+    const uploadModule = new UploadModule();
     
     this.app.use('/api/v1/auth', authModule.router);
     this.app.use('/api/v1/leads', leadModule.router);
-this.app.use('/api/v1/orders', orderModule.router);
+    this.app.use('/api/v1/orders', orderModule.router);
+    this.app.use('/api/v1/case-studies', caseStudyModule.router);
+    this.app.use('/api/v1/uploads', uploadModule.router);
   }
 
   initializeErrorHandling() {

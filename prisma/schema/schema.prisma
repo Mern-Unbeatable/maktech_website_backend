@@ -11,6 +11,13 @@ datasource db {
 // ==========================================
 // 1. USERS & ROLES
 // ==========================================
+
+enum Role {
+  ADMIN
+  CUSTOMER
+  EDITOR
+}
+
 model User {
   id        String   @id @default(cuid())
   name      String?
@@ -23,15 +30,23 @@ model User {
   posts     Post[]
 }
 
-enum Role {
-  ADMIN
-  CUSTOMER
-  EDITOR
-}
 
 // ==========================================
 // 2. EMAILS (Helpdesk / CRM System)
 // ==========================================
+
+
+enum EmailStatus {
+  UNREAD
+  READ
+  REPLIED
+}
+
+enum EmailDirection {
+  INBOUND  // Incoming from client
+  OUTBOUND // Outgoing from Admin
+}
+
 model EmailThread {
   id          String   @id @default(cuid())
   subject     String
@@ -64,21 +79,26 @@ model EmailMessage {
   sentAt      DateTime @default(now())
 }
 
-enum EmailStatus {
-  UNREAD
-  READ
-  REPLIED
-}
 
-enum EmailDirection {
-  INBOUND  // Incoming from client
-  OUTBOUND // Outgoing from Admin
-}
 
 
 // ==========================================
 // 3. LEADS (Contact Form Submissions)
 // ==========================================
+
+enum LeadSource {
+  WEBSITE
+  MANUAL
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  CONVERTED
+  LOST
+}
+
 model Lead {
   id          String   @id @default(cuid())
   fullName    String
@@ -97,22 +117,20 @@ model Lead {
   updatedAt   DateTime @updatedAt
 }
 
-enum LeadSource {
-  WEBSITE
-  MANUAL
-}
 
-enum LeadStatus {
-  NEW
-  CONTACTED
-  IN_PROGRESS
-  CONVERTED
-  LOST
-}
 
 // ==========================================
 // 4. ORDERS
 // ==========================================
+
+enum OrderStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+
 model Order {
   id           String   @id @default(cuid())
   orderId      String   @unique
@@ -132,12 +150,6 @@ model Order {
   updatedAt    DateTime @updatedAt
 }
 
-enum OrderStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
-}
 
 // ==========================================
 // 5. CASE STUDIES (Portfolio)
@@ -146,16 +158,16 @@ model CaseStudy {
   id          String   @id @default(cuid())
   title       String
   slug        String   @unique
-  clientName  String
+  category    String?
+  client      String?
+  timeline    String?
+  services    String?
+  tags        String?
+  description String?  @db.Text
   coverImage  String?
-  
-  // Using JSON for flexible sections (overview, challenges, solutions, etc.)
   content     Json?
   
   isPublished Boolean  @default(false)
-  
-  services    CaseStudyService[] // Bridge relation
-
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -164,19 +176,6 @@ model Service {
   id          String   @id @default(cuid())
   name        String   @unique
   slug        String   @unique
-  
-  caseStudies CaseStudyService[] // Bridge relation
-}
-
-// Explicit Bridge Table: CaseStudy <-> Service
-model CaseStudyService {
-  caseStudyId String
-  serviceId   String
-  
-  caseStudy   CaseStudy @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
-  service     Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-
-  @@id([caseStudyId, serviceId])
 }
 
 // ==========================================
@@ -225,6 +224,16 @@ model PostTag {
 // ==========================================
 // 7. JOBS & APPLICATIONS
 // ==========================================
+
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  INTERVIEW
+  REJECTED
+  HIRED
+}
+
 model Job {
   id               String   @id @default(cuid())
   title            String
@@ -289,13 +298,6 @@ model JobApplication {
   updatedAt     DateTime @updatedAt
 }
 
-enum ApplicationStatus {
-  PENDING
-  REVIEWING
-  INTERVIEW
-  REJECTED
-  HIRED
-}
 
 model JobApplicationAnswer {
   id            String  @id @default(cuid())
@@ -315,6 +317,13 @@ model JobApplicationAnswer {
 // ==========================================
 // 8. PRICING
 // ==========================================
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+  ONETIME
+}
+
 model PricingPlan {
   id           String   @id @default(cuid())
   name         String
@@ -330,11 +339,6 @@ model PricingPlan {
   updatedAt    DateTime @updatedAt
 }
 
-enum BillingCycle {
-  MONTHLY
-  YEARLY
-  ONETIME
-}
 
 model PlanFeature {
   id         String   @id @default(cuid())
