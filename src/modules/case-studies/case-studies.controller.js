@@ -42,7 +42,7 @@ export class CaseStudyController {
     const caseStudy = await this.caseStudyService.getCaseStudyById(id);
     
     if (!caseStudy) {
-      throw new ApiError('Case study not found', 404);
+      throw new ApiError(404, 'Case study not found');
     }
     
     sendResponse(res, {

@@ -13,7 +13,7 @@ class BlogService {
     });
 
     if (existingBlog) {
-      throw new ApiError('A blog with this title/slug already exists', 400);
+      throw new ApiError(400, 'A blog with this title/slug already exists');
     }
 
     const blog = await prisma.post.create({
@@ -73,7 +73,7 @@ class BlogService {
     });
 
     if (!blog) {
-      throw new ApiError('Blog not found', 404);
+      throw new ApiError(404, 'Blog not found');
     }
 
     return blog;
@@ -85,7 +85,7 @@ class BlogService {
     });
 
     if (!blog) {
-      throw new ApiError('Blog not found', 404);
+      throw new ApiError(404, 'Blog not found');
     }
 
     if (data.title && !data.slug) {
@@ -99,7 +99,7 @@ class BlogService {
       });
       
       if (existingSlug) {
-        throw new ApiError('A blog with this title/slug already exists', 400);
+        throw new ApiError(400, 'A blog with this title/slug already exists');
       }
     }
 
@@ -117,7 +117,7 @@ class BlogService {
     });
 
     if (!blog) {
-      throw new ApiError('Blog not found', 404);
+      throw new ApiError(404, 'Blog not found');
     }
 
     await prisma.post.delete({

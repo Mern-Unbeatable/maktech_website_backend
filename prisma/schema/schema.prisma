@@ -334,6 +334,7 @@ model PricingPlan {
   description  String?
   price        Float
   billingCycle BillingCycle @default(MONTHLY)
+  service      String?
   isPopular    Boolean  @default(false)
   
   features     PlanFeature[]

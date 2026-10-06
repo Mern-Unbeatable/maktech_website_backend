@@ -50,7 +50,7 @@ export class CaseStudyValidation {
         next();
       } catch (error) {
         if (error instanceof z.ZodError) {
-          next(new ApiError(error.errors[0].message, 400));
+          next(new ApiError(400, error.errors[0].message));
         } else {
           next(error);
         }

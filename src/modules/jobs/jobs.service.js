@@ -111,7 +111,7 @@ export class JobsService {
     });
 
     if (!job) {
-      throw new ApiError('Job not found', 404);
+      throw new ApiError(404, 'Job not found');
     }
 
     return job;
@@ -123,7 +123,7 @@ export class JobsService {
     });
 
     if (!job) {
-      throw new ApiError('Job not found', 404);
+      throw new ApiError(404, 'Job not found');
     }
 
     const { questions, ...jobData } = data;
@@ -205,7 +205,7 @@ export class JobsService {
     });
 
     if (!job) {
-      throw new ApiError('Job not found', 404);
+      throw new ApiError(404, 'Job not found');
     }
 
     await prisma.job.delete({
