@@ -25,6 +25,7 @@
         "bcryptjs": "^3.0.3",
         "dotenv": "^17.4.2",
         "express": "5.2.1",
+        "googleapis": "^178.0.0",
         "imap-simple": "^5.1.0",
         "jsonwebtoken": "^9.0.3",
         "mailparser": "^3.9.36",

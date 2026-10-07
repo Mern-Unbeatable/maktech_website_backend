@@ -110,6 +110,9 @@ model Lead {
   budget      Float?
   industry    String?
   message     String?  @db.Text
+    meetingDate String?
+    timezone    String?
+    meetingLink String?
   status      LeadStatus @default(NEW)
   source      LeadSource @default(WEBSITE)
   

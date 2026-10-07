@@ -11,6 +11,9 @@ export class LeadsValidation {
     budget: z.number().optional().or(z.string().transform(val => val ? Number(val) : undefined)),
     industry: z.string().optional(),
     message: z.string().optional(),
+    meetingDate: z.string().optional(),
+    timezone: z.string().optional(),
+    meetingLink: z.string().optional(),
     
   });
 
@@ -25,6 +28,9 @@ export class LeadsValidation {
     budget: z.number().optional().or(z.string().transform(val => val ? Number(val) : undefined)),
     industry: z.string().optional(),
     message: z.string().optional(),
+    meetingDate: z.string().optional(),
+    timezone: z.string().optional(),
+    meetingLink: z.string().optional(),
     
   });
 

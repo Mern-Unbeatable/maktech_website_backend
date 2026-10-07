@@ -2,6 +2,7 @@
 import { prisma } from '../../config/db.js';
 import { ApiError } from '../../utils/ApiError.js';
 import { httpStatus } from '../../utils/httpStatus.js';
+import { bookGoogleMeet } from '../../utils/googleCalendar.js';
 
 export class LeadsService {
   constructor() {
@@ -9,6 +10,17 @@ export class LeadsService {
   }
 
   async createLead(data) {
+    if (data.meetingDate) {
+      const meetingLink = await bookGoogleMeet({
+        meetingDate: data.meetingDate,
+        timezone: data.timezone,
+        leadName: data.fullName,
+        leadEmail: data.email,
+      });
+      if (meetingLink) {
+        data.meetingLink = meetingLink;
+      }
+    }
     return await this.prisma.lead.create({
       data,
     });
