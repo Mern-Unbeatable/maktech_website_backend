@@ -15,12 +15,12 @@ const CACHE_TTL_MS = 60000; // 60 seconds
 export class EmailsService {
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT || 465,
-      secure: process.env.EMAIL_SECURE === 'true' || true, // true for 465, false for other ports
+      host: config.email.host,
+      port: config.email.port,
+      secure: config.email.secure, // true for 465, false for other ports
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: config.email.user,
+        pass: config.email.pass,
       },
       tls: {
         rejectUnauthorized: false
@@ -29,10 +29,10 @@ export class EmailsService {
 
     this.imapConfig = {
       imap: {
-        user: process.env.EMAIL_USER,
-        password: process.env.EMAIL_PASS,
-        host: process.env.EMAIL_IMAP_HOST || process.env.EMAIL_HOST,
-        port: process.env.EMAIL_IMAP_PORT || 993,
+        user: config.email.user,
+        password: config.email.pass,
+        host: process.env.EMAIL_IMAP_HOST || config.email.host,
+        port: config.email.imapPort,
         tls: true,
         tlsOptions: { rejectUnauthorized: false },
         authTimeout: 3000,
@@ -41,12 +41,12 @@ export class EmailsService {
   }
 
   async sendEmail(to, subject, html) {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    if (!config.email.user || !config.email.pass) {
       throw new ApiError(500, 'Email credentials are not configured in .env');
     }
 
     const mailOptions = {
-      from: `"${process.env.EMAIL_FROM_NAME || 'Maktech'}" <${process.env.EMAIL_USER}>`,
+      from: `"${config.email.fromName}" <${config.email.user}>`,
       to,
       subject,
       html,
@@ -65,7 +65,7 @@ export class EmailsService {
     const cacheKey = `${page}_${limit}`;
     const now = Date.now();
     
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    if (!config.email.user || !config.email.pass) {
       throw new ApiError(500, 'IMAP credentials are not configured in .env');
     }
 
