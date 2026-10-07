@@ -38,4 +38,25 @@ export class EmailsController {
       data: result.data
     });
   });
+  
+  markAsRead = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    await this.emailsService.markAsRead(id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Email marked as read',
+    });
+  });
+
+  getStats = catchAsync(async (req, res) => {
+    const stats = await this.emailsService.getStats();
+    
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Stats fetched successfully',
+      data: stats
+    });
+  });
 }

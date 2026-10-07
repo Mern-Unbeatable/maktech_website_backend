@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import config from './config/env.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { LeadsModule } from './modules/leads/leads.module.js';
@@ -22,6 +23,7 @@ class App {
   }
 
   initializeMiddlewares() {
+    this.app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     

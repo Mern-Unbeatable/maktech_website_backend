@@ -78,13 +78,9 @@ export class EmailsService {
 
     try {
       const connection = await imaps.connect(this.imapConfig);
-      await connection.openBox('INBOX');
+      const box = await connection.openBox('INBOX');
 
-      // Fetch ALL messages without bodies to get the total count
-      const searchCriteria = ['ALL'];
-      const uidFetchOptions = { bodies: [] };
-      const allMessages = await connection.search(searchCriteria, uidFetchOptions);
-      const total = allMessages.length;
+      const total = box.messages.total;
 
       const totalPages = Math.ceil(total / limit);
       
@@ -131,6 +127,7 @@ export class EmailsService {
 
           return {
             id,
+              status: (msg.attributes.flags && msg.attributes.flags.includes('\\Seen')) ? 'Read' : 'Unread',
             from: parsed.from?.text || '',
             to: parsed.to?.text || '',
             subject: parsed.subject || '(No Subject)',
@@ -152,6 +149,60 @@ export class EmailsService {
       return responsePayload;
     } catch (error) {
       throw new ApiError(500, `Failed to fetch inbox: ${error.message}`);
+    }
+  }
+  
+  async markAsRead(uid) {
+    const numericUid = parseInt(uid, 10);
+    try {
+      const connection = await imaps.connect(this.imapConfig);
+      await connection.openBox('INBOX');
+      await connection.addFlags(numericUid, ['\\Seen']);
+      connection.end();
+      return true;
+    } catch (error) {
+      throw new ApiError(500, `Failed to mark as read: ${error.message}`);
+    }
+  }
+
+  async getStats() {
+    if (!config.email.user || !config.email.pass) {
+      throw new ApiError(500, 'IMAP credentials are not configured in .env');
+    }
+    try {
+      const connection = await imaps.connect(this.imapConfig);
+      
+      // Get Unread Emails using fast STATUS command
+      const unreadCount = await new Promise((resolve, reject) => {
+        connection.imap.status('INBOX', (err, box) => {
+          if (err) reject(err);
+          else resolve(box.messages.unseen || 0);
+        });
+      });
+
+      await connection.openBox('INBOX');
+
+      // Emails Today (Instant approximation or search)
+      let todayCount = 0;
+      try {
+        const today = new Date();
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const dateString = `${today.getDate()}-${months[today.getMonth()]}-${today.getFullYear()}`;
+        const todayMessages = await connection.search([['SINCE', dateString]], { bodies: [] });
+        todayCount = todayMessages.length;
+      } catch (err) {
+        console.warn("Failed to fetch today count, skipping", err);
+      }
+
+      connection.end();
+
+      return {
+        unread: unreadCount,
+        today: todayCount,
+        waiting: 0 // Mocked for now
+      };
+    } catch (error) {
+      throw new ApiError(500, `Failed to fetch stats: ${error.message}`);
     }
   }
 }

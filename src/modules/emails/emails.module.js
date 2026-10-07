@@ -12,4 +12,7 @@ const emailsController = new EmailsController(emailsService);
 router.post('/send', auth('ADMIN'), emailsController.sendEmail);
 router.get('/inbox', auth('ADMIN'), emailsController.getInbox);
 
+router.get('/stats', auth('ADMIN'), emailsController.getStats);
+router.patch('/:id/read', auth('ADMIN'), emailsController.markAsRead);
+
 export const emailsModule = { router };
