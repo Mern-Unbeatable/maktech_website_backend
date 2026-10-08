@@ -71,7 +71,10 @@ export class JobsValidation {
         next();
       } catch (error) {
         if (error instanceof z.ZodError) {
-          next(new ApiError(400, error.errors[0].message));
+          console.error("Zod Validation Error:", JSON.stringify(error, null, 2));
+          const errs = error.errors || error.issues || [];
+          const msg = errs.length > 0 ? errs[0].message : "Validation failed";
+          next(new ApiError(400, msg));
         } else {
           next(error);
         }
