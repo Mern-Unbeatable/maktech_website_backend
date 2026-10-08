@@ -1,42 +1,42 @@
 {
-    "name": "maktechgroup-backend",
-    "version": "1.0.0",
-    "type": "module",
-    "description": "",
-    "main": "src/server.js",
-    "scripts": {
-        "postinstall": "prisma generate",
-        "start": "node src/server.js",
-        "dev": "nodemon src/server.js",
-        "prisma:generate": "prisma generate",
-        "prisma:migrate": "prisma migrate dev",
-        "prisma:studio": "prisma studio",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [],
-    "author": "",
-    "engines": {
-        "node": ">=22.0.0"
-    },
-    "license": "ISC",
-    "dependencies": {
-        "@prisma/adapter-pg": "^7.10.0",
-        "@prisma/client": "^7.10.0",
-        "bcryptjs": "^3.0.3",
-        "cors": "^2.8.6",
-        "dotenv": "^17.4.2",
-        "express": "5.2.1",
-        "googleapis": "^178.0.0",
-        "imap-simple": "^5.1.0",
-        "jsonwebtoken": "^9.0.3",
-        "mailparser": "^3.9.36",
-        "multer": "^2.4.0",
-        "nodemailer": "^10.0.15",
-        "pg": "^8.23.1",
-        "prisma": "^7.10.0",
-        "zod": "^4.6.5"
-    },
-    "devDependencies": {
-        "nodemon": "3.1.14"
-    }
+  "name": "maktechgroup-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "postinstall": "prisma generate",
+    "start": "node api.js && node src/server.js",
+    "dev": "node api.js && nodemon src/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "5.2.1",
+    "googleapis": "^178.0.0",
+    "imap-simple": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "mailparser": "^3.9.36",
+    "multer": "^2.4.0",
+    "nodemailer": "^10.0.15",
+    "pg": "^8.23.1",
+    "prisma": "^7.10.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.14"
+  }
 }
