@@ -191,6 +191,7 @@ model Post {
   category     String?
   date         String?
   postedBy     String?
+  readTime     String?
   keyTakeaways String?  @db.Text
   blogContent  String?  @db.Text
   

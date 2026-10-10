@@ -28,21 +28,40 @@ class BlogService {
     const { searchTerm, category, isPublished } = options;
 
     const where = {};
+    const AND = [];
 
     if (searchTerm) {
-      where.OR = [
-        { title: { contains: searchTerm, mode: 'insensitive' } },
-        { category: { contains: searchTerm, mode: 'insensitive' } },
-        { keyTakeaways: { contains: searchTerm, mode: 'insensitive' } }
-      ];
+      AND.push({
+        OR: [
+          { title: { contains: searchTerm, mode: 'insensitive' } },
+          { category: { contains: searchTerm, mode: 'insensitive' } },
+          { keyTakeaways: { contains: searchTerm, mode: 'insensitive' } }
+        ]
+      });
     }
 
     if (category) {
-      where.category = category;
+      AND.push({ category });
     }
 
     if (isPublished !== undefined) {
-      where.isPublished = isPublished === 'true';
+      const isPub = isPublished === 'true';
+      AND.push({ isPublished: isPub });
+      
+      if (isPub) {
+        const today = new Date().toISOString().split('T')[0];
+        AND.push({
+          OR: [
+            { date: { lte: today } },
+            { date: null },
+            { date: '' }
+          ]
+        });
+      }
+    }
+
+    if (AND.length > 0) {
+      where.AND = AND;
     }
 
     const blogs = await prisma.post.findMany({
