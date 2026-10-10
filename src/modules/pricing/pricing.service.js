@@ -17,7 +17,8 @@ export class PricingService {
           return {
             name: f.name.trim(),
             isIncluded: f.isIncluded !== false,
-            order: f.order !== undefined ? f.order : index
+            order: f.order !== undefined ? f.order : index,
+            icon: f.icon
           };
         })
       };
@@ -127,7 +128,8 @@ export class PricingService {
           return {
             name: f.name.trim(),
             isIncluded: f.isIncluded !== false,
-            order: f.order !== undefined ? f.order : index
+            order: f.order !== undefined ? f.order : index,
+            icon: f.icon
           };
         })
       };

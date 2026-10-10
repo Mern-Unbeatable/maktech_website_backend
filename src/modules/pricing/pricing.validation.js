@@ -19,7 +19,8 @@ export class PricingValidation {
             id: z.string().optional(),
             name: z.string(),
             isIncluded: z.boolean().optional(),
-            order: z.number().int().optional()
+            order: z.number().int().optional(),
+            icon: z.string().optional()
           })
         ])
       ).optional()
@@ -42,7 +43,8 @@ export class PricingValidation {
             id: z.string().optional(),
             name: z.string(),
             isIncluded: z.boolean().optional(),
-            order: z.number().int().optional()
+            order: z.number().int().optional(),
+            icon: z.string().optional()
           })
         ])
       ).optional()

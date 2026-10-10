@@ -353,6 +353,7 @@ model PlanFeature {
   name       String
   isIncluded Boolean  @default(true)
   order      Int      @default(0)
+  icon       String?
   
   planId     String
   plan       PricingPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
