@@ -5,12 +5,12 @@ export class JobsValidation {
   static createJobSchema = z.object({
     body: z.object({
       title: z.string().min(1, 'Title is required'),
-      description: z.string().min(1, 'Description is required'),
-      department: z.string().min(1, 'Department is required'),
-      vacancy: z.number().int().optional().default(1),
-      salary: z.string().optional(),
-      coverImage: z.string().url('Invalid image URL').optional().or(z.literal('')),
-      isActive: z.boolean().optional(),
+      description: z.string().optional().default(''),
+      department: z.string().optional().default('General'),
+      vacancy: z.union([z.number(), z.string()]).transform(val => Number(val) || 1).optional().default(1),
+      salary: z.string().nullable().optional(),
+      coverImage: z.string().nullable().optional(),
+      isActive: z.boolean().optional().default(true),
       
       jobTypes: z.any().optional(),
       responsibilities: z.any().optional(),
@@ -34,9 +34,9 @@ export class JobsValidation {
       title: z.string().optional(),
       description: z.string().optional(),
       department: z.string().optional(),
-      vacancy: z.number().int().optional(),
-      salary: z.string().optional(),
-      coverImage: z.string().url('Invalid image URL').optional().or(z.literal('')),
+      vacancy: z.union([z.number(), z.string()]).transform(val => Number(val) || 1).optional(),
+      salary: z.string().nullable().optional(),
+      coverImage: z.string().nullable().optional(),
       isActive: z.boolean().optional(),
       
       jobTypes: z.any().optional(),
