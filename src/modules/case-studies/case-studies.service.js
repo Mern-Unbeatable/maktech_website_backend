@@ -23,6 +23,7 @@ export class CaseStudyService {
     if (filters.searchTerm) {
       whereCondition.OR = [
         { title: { contains: filters.searchTerm, mode: 'insensitive' } },
+        { slug: { contains: filters.searchTerm, mode: 'insensitive' } },
         { client: { contains: filters.searchTerm, mode: 'insensitive' } },
         { description: { contains: filters.searchTerm, mode: 'insensitive' } },
       ];
@@ -54,9 +55,14 @@ export class CaseStudyService {
     };
   }
 
-  async getCaseStudyById(id) {
-    return await prisma.caseStudy.findUnique({
-      where: { id }
+  async getCaseStudyById(idOrSlug) {
+    return await prisma.caseStudy.findFirst({
+      where: {
+        OR: [
+          { id: idOrSlug },
+          { slug: idOrSlug }
+        ]
+      }
     });
   }
 
