@@ -24,6 +24,8 @@ const storage = multer.diskStorage({
 // File filter (accept images, audio, and video)
 const fileFilter = (req, file, cb) => {
   const allowedMimeTypes = [
+    // Documents & Resumes
+    'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     // Images
     'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
     // Video
@@ -35,7 +37,7 @@ const fileFilter = (req, file, cb) => {
   if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new ApiError(httpStatus.BAD_REQUEST, 'Only image, video, and audio files are allowed!'), false);
+    cb(new ApiError(httpStatus.BAD_REQUEST, 'Only document, image, video, and audio files are allowed!'), false);
   }
 };
 

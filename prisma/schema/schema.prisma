@@ -237,6 +237,7 @@ model PostTag {
 enum ApplicationStatus {
   PENDING
   REVIEWING
+  SHORTLISTED
   INTERVIEW
   REJECTED
   HIRED
@@ -294,6 +295,8 @@ model JobApplication {
   id            String   @id @default(cuid())
   applicantName String
   applicantEmail String
+  applicantPhone String?
+  recruiterNotes String?   @db.Text
   resumeUrl     String?
   status        ApplicationStatus @default(PENDING)
   
