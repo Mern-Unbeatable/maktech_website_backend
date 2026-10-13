@@ -134,3 +134,42 @@ export const injectTracking = (htmlContent = '', trackingId, backendBaseUrl) => 
 
   return processedHtml;
 };
+
+
+/**
+ * Detect automated security scanners and prefetch bots
+ * (e.g. Google Security Scanner, Gmail Image Proxy delivery crawler)
+ */
+export const isSecurityScannerOrBot = (req, sentAt) => {
+  const userAgent = (req.headers['user-agent'] || '').toLowerCase();
+  const ip = getClientIp(req);
+
+  // 1. Check if it's the admin dashboard previewing
+  const referer = (req.headers['referer'] || req.headers['referrer'] || '').toLowerCase();
+  if (
+    referer.includes('/admin') ||
+    referer.includes('localhost:5173') ||
+    referer.includes('localhost:3000')
+  ) {
+    return true;
+  }
+
+  // 2. Known crawler & security scanner signatures
+  const isGoogleCrawler =
+    userAgent.includes('googleimageproxy') ||
+    userAgent.includes('ggpht.com') ||
+    userAgent.includes('googlebot') ||
+    userAgent.includes('edge/12.246') ||
+    (ip && (ip.startsWith('66.249.') || ip.startsWith('74.125.')));
+
+  // If request is from an automated scanner arriving within 30 seconds of sending, it is an automated delivery prefetch
+  if (sentAt) {
+    const elapsedMs = Date.now() - new Date(sentAt).getTime();
+    if (elapsedMs < 30000 && isGoogleCrawler) {
+      console.log(`[Tracking] Filtered automated scanner prefetch (${Math.round(elapsedMs / 1000)}s after send from ${ip})`);
+      return true;
+    }
+  }
+
+  return false;
+};

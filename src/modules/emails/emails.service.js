@@ -10,6 +10,7 @@ import {
   getClientIp,
   getGeoLocation,
   parseUserAgent,
+  isSecurityScannerOrBot,
 } from './emailTracking.helper.js';
 
 // Global In-Memory Cache for Inbox
@@ -115,18 +116,17 @@ export class EmailsService {
   async trackOpen(trackingId, req) {
     if (!trackingId) return;
 
-    // Ignore only if specifically from admin preview URL
-    const referer = req.headers['referer'] || req.headers['referrer'] || '';
-    if (referer.includes('localhost:5173/admin') || referer.includes('localhost:3000/admin')) {
-      return;
-    }
-
     try {
       const message = await prisma.emailMessage.findFirst({
         where: { trackingId },
       });
 
       if (!message) return;
+
+      // Filter out automated anti-spam and security scanner prefetches upon delivery
+      if (isSecurityScannerOrBot(req, message.sentAt)) {
+        return;
+      }
 
       const ip = getClientIp(req);
       const geo = getGeoLocation(ip);
