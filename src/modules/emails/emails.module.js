@@ -8,10 +8,15 @@ const router = express.Router();
 const emailsService = new EmailsService();
 const emailsController = new EmailsController(emailsService);
 
-// We should protect email endpoints to ADMIN only
-router.post('/send', auth('ADMIN'), emailsController.sendEmail);
-router.get('/inbox', auth('ADMIN'), emailsController.getInbox);
+// ── Public Tracking Routes (Public - No Token Required for Email Clients!) ──
+router.get('/track/open/:trackingId.png', emailsController.trackOpen);
+router.get('/track/click', emailsController.trackClick);
 
+// ── Protected Admin Routes (Requires Admin Login) ──
+router.post('/send', auth('ADMIN'), emailsController.sendEmail);
+router.get('/sent', auth('ADMIN'), emailsController.getSentEmails);
+router.get('/messages/:id', auth('ADMIN'), emailsController.getEmailDetails);
+router.get('/inbox', auth('ADMIN'), emailsController.getInbox);
 router.get('/stats', auth('ADMIN'), emailsController.getStats);
 router.patch('/:id/read', auth('ADMIN'), emailsController.markAsRead);
 

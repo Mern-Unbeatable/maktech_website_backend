@@ -6,6 +6,10 @@ export const sendResponse = (res, data) => {
     data: data.data || null,
   };
 
+  if (data.stats !== undefined && data.stats !== null) {
+    responseData.stats = data.stats;
+  }
+
   if (data.meta !== undefined && data.meta !== null) {
     responseData.meta = data.meta;
   }

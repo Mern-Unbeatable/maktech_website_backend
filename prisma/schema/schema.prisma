@@ -64,19 +64,64 @@ model EmailMessage {
   id          String   @id @default(cuid())
   
   // Links to the main conversation thread
-  threadId    String
-  thread      EmailThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  threadId    String?
+  thread      EmailThread? @relation(fields: [threadId], references: [id], onDelete: Cascade)
   
   // Was this received from the client, or sent by the admin?
-  direction   EmailDirection 
+  direction   EmailDirection @default(OUTBOUND)
   
   fromEmail   String
   toEmail     String
+  subject     String?
   
-  // Stored as JSON to handle complex HTML structures or attachments easily
+  // Stored body / text / html
   body        Json?
+  html        String?  @db.Text
+  text        String?  @db.Text
   
   sentAt      DateTime @default(now())
+
+  // --- Tracking details ---
+  trackingId     String?
+  isOpened       Boolean  @default(false)
+  firstOpenedAt  DateTime?
+  lastOpenedAt   DateTime?
+  openCount      Int      @default(0)
+
+  isClicked      Boolean  @default(false)
+  firstClickedAt DateTime?
+  lastClickedAt  DateTime?
+  clickCount     Int      @default(0)
+
+  // Last detected IP, Location, Device
+  ipAddress      String?
+  country        String?
+  city           String?
+  region         String?
+  device         String?
+  browser        String?
+  userAgent      String?  @db.Text
+
+  activities     EmailTrackingActivity[]
+  @@index([trackingId])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model EmailTrackingActivity {
+  id          String       @id @default(cuid())
+  messageId   String
+  message     EmailMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  type        String       // "OPEN" or "CLICK"
+  targetUrl   String?      // if type == "CLICK"
+  ipAddress   String?
+  country     String?
+  city        String?
+  region      String?
+  device      String?
+  browser     String?
+  userAgent   String?      @db.Text
+  createdAt   DateTime     @default(now())
 }
 
 
