@@ -1,4 +1,4 @@
-import { catchAsync } from '../../utils/catchAsync.js';
+﻿import { catchAsync } from '../../utils/catchAsync.js';
 import { sendResponse } from '../../utils/sendResponse.js';
 import { httpStatus } from '../../utils/httpStatus.js';
 import { calculatePagination } from '../../utils/paginationHelper.js';
@@ -16,7 +16,18 @@ export class LeadsController {
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
-      message: 'Your message has been submitted successfully!',
+      message: 'Your meeting request / message has been submitted successfully!',
+      data: result
+    });
+  });
+
+  getBookedSlots = catchAsync(async (req, res) => {
+    const result = await this.leadsService.getBookedSlots(req.query.date);
+    
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Booked slots fetched successfully!',
       data: result
     });
   });
@@ -83,5 +94,3 @@ export class LeadsController {
     });
   });
 }
-
-

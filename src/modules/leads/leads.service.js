@@ -1,5 +1,4 @@
-
-import { prisma } from '../../config/db.js';
+﻿import { prisma } from '../../config/db.js';
 import { ApiError } from '../../utils/ApiError.js';
 import { httpStatus } from '../../utils/httpStatus.js';
 import { bookGoogleMeet } from '../../utils/googleCalendar.js';
@@ -11,6 +10,25 @@ export class LeadsService {
 
   async createLead(data) {
     if (data.meetingDate) {
+      // Check if slot is already booked to prevent double-booking
+      const existing = await this.prisma.lead.findFirst({
+        where: {
+          meetingDate: data.meetingDate,
+        },
+      });
+      if (existing) {
+        throw new ApiError(
+          httpStatus.CONFLICT,
+          'This meeting time slot has already been booked. Please choose another available time.'
+        );
+      }
+
+      /*
+      // =========================================================================
+      // TEMPORARILY DISABLED: Google Meet Automated Meeting Creation
+      // Kept intact per client request so it can be re-enabled whenever needed.
+      // To reactivate, simply uncomment the following block:
+      // =========================================================================
       const meetingLink = await bookGoogleMeet({
         meetingDate: data.meetingDate,
         timezone: data.timezone,
@@ -20,10 +38,35 @@ export class LeadsService {
       if (meetingLink) {
         data.meetingLink = meetingLink;
       }
+      */
     }
     return await this.prisma.lead.create({
       data,
     });
+  }
+
+  async getBookedSlots(date) {
+    const where = {
+      meetingDate: {
+        not: null,
+      },
+    };
+
+    if (date) {
+      where.meetingDate = {
+        contains: date,
+      };
+    }
+
+    const leads = await this.prisma.lead.findMany({
+      where,
+      select: {
+        meetingDate: true,
+        timezone: true,
+      },
+    });
+
+    return leads.map((l) => l.meetingDate).filter(Boolean);
   }
 
   async getAllLeads(paginationOptions, filters) {
@@ -149,5 +192,3 @@ export class LeadsService {
     });
   }
 }
-
-

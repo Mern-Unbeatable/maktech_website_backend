@@ -1,4 +1,4 @@
-import { Router } from 'express';
+﻿import { Router } from 'express';
 import { LeadsController } from './leads.controller.js';
 import { LeadsService } from './leads.service.js';
 import { LeadsValidation } from './leads.validation.js';
@@ -16,7 +16,13 @@ export class LeadsModule {
   }
 
   initializeRoutes() {
-    // Public route
+    // Public route: Get booked slots
+    this.router.get(
+      '/booked-slots',
+      this.leadsController.getBookedSlots
+    );
+
+    // Public route: Submit contact form / meeting booking
     this.router.post(
       '/',
       optionalAuth,
@@ -66,6 +72,3 @@ export class LeadsModule {
     );
   }
 }
-
-
-
