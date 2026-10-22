@@ -6,6 +6,7 @@ import { LeadsModule } from "./modules/leads/leads.module.js";
 import { ordersModule } from "./modules/orders/orders.module.js";
 import { CaseStudyModule } from "./modules/case-studies/case-studies.module.js";
 import { UploadModule } from "./modules/uploads/uploads.module.js";
+import { MediaModule } from "./modules/media/media.module.js";
 import { blogModule } from "./modules/blogs/blogs.module.js";
 import { jobsModule } from "./modules/jobs/jobs.module.js";
 import { pricingModule } from "./modules/pricing/pricing.module.js";
@@ -32,6 +33,9 @@ class App {
         "http://127.0.0.1:5173",
         "http://127.0.0.1:5174",
         "http://127.0.0.1:5175",
+        "https://maktechgroup.com",
+        "https://www.maktechgroup.com",
+        "https://dev.maktechgroup.com",
       ],
         credentials: true,
       }),
@@ -67,12 +71,14 @@ class App {
     const leadsModule = new LeadsModule();
     const caseStudyModule = new CaseStudyModule();
     const uploadModule = new UploadModule();
+    const mediaModule = new MediaModule();
 
     this.app.use("/api/v1/auth", authModule.router);
     this.app.use("/api/v1/leads", leadsModule.router);
     this.app.use("/api/v1/orders", ordersModule.router);
     this.app.use("/api/v1/case-studies", caseStudyModule.router);
     this.app.use("/api/v1/uploads", uploadModule.router);
+    this.app.use("/api/v1/media", mediaModule.router);
     this.app.use("/api/v1/blogs", blogModule.router);
     this.app.use("/api/v1/jobs", jobsModule.router);
     this.app.use("/api/v1/pricing", pricingModule.router);

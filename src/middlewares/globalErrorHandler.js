@@ -16,6 +16,11 @@ export const globalErrorHandler = (err, req, res, next) => {
         message: issue.message,
       };
     });
+  } else if (err.name === 'MulterError') {
+    statusCode = httpStatus.BAD_REQUEST;
+    message =
+      err.code === 'LIMIT_FILE_SIZE' ? 'File is too large' : err.message;
+    errorMessages = [{ path: err.field || '', message }];
   } else if (err.isOperational) {
     errorMessages = [{ path: '', message: err.message }];
   } else if (err instanceof Error) {

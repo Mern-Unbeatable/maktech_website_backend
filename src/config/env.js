@@ -25,5 +25,12 @@ export default {
     imapHost: process.env.EMAIL_IMAP_HOST || process.env.EMAIL_HOST,
     imapPort: process.env.EMAIL_IMAP_PORT || 993,
     fromName: process.env.EMAIL_FROM_NAME || 'Maktech'
+  },
+  r2: {
+    endpoint: process.env.R2_ENDPOINT,
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+    bucket: process.env.R2_BUCKET,
+    publicUrl: (process.env.R2_PUBLIC_URL || '').replace(/\/+$/, ''),
   }
 };
