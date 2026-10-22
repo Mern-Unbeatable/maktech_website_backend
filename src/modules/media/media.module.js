@@ -1,6 +1,8 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import { auth } from '../../middlewares/auth.js';
-import { MediaController } from './media.controller.js';
+import { MediaController, MAX_PART_SIZE } from './media.controller.js';
+
+const rawChunk = express.raw({ type: 'application/octet-stream', limit: MAX_PART_SIZE });
 
 export class MediaModule {
   constructor() {
@@ -13,7 +15,12 @@ export class MediaModule {
     this.router.get('/', auth('ADMIN'), this.mediaController.list);
     this.router.delete('/', auth('ADMIN'), this.mediaController.remove);
     this.router.post('/multipart/start', auth('ADMIN'), this.mediaController.startUpload);
-    this.router.post('/multipart/sign', auth('ADMIN'), this.mediaController.signParts);
+    this.router.post(
+      '/multipart/part',
+      auth('ADMIN'),
+      rawChunk,
+      this.mediaController.uploadPart
+    );
     this.router.post('/multipart/complete', auth('ADMIN'), this.mediaController.completeUpload);
     this.router.post('/multipart/abort', auth('ADMIN'), this.mediaController.abortUpload);
   }

@@ -9,7 +9,6 @@ import {
   CompleteMultipartUploadCommand,
   AbortMultipartUploadCommand,
 } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { r2, R2_BUCKET, R2_PUBLIC_URL } from '../../config/r2.js';
 import { catchAsync } from '../../utils/catchAsync.js';
 import { sendResponse } from '../../utils/sendResponse.js';
@@ -19,10 +18,9 @@ import { ApiError } from '../../utils/ApiError.js';
 const PREFIX = 'media/';
 const MB = 1024 * 1024;
 const MIN_PART_SIZE = 16 * MB;
-// S3/R2 multipart limits
+export const MAX_PART_SIZE = 100 * MB;
+// S3/R2 multipart limit
 const MAX_PARTS = 10000;
-const MAX_SIGN_BATCH = 100;
-const PART_URL_TTL_SECONDS = 60 * 60;
 
 const VIDEO_EXTENSIONS = new Set([
   '.mp4', '.webm', '.mov', '.m4v', '.mkv', '.avi', '.ogv', '.3gp', '.wmv', '.mpeg', '.mpg',
@@ -87,6 +85,9 @@ export class MediaController {
     if (!Number.isFinite(size) || size <= 0) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid file size');
     }
+    if (partSizeFor(size) > MAX_PART_SIZE) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'File is too large to upload');
+    }
 
     const key = `${PREFIX}${Date.now()}-${crypto.randomUUID()}${safeExtension(fileName)}`;
     const { UploadId } = await r2.send(
@@ -112,41 +113,34 @@ export class MediaController {
     });
   });
 
-  signParts = catchAsync(async (req, res) => {
+  uploadPart = catchAsync(async (req, res) => {
     assertConfigured();
-    assertUploadRef(req.body || {});
-    const { key, uploadId, partNumbers } = req.body;
+    assertUploadRef(req.query);
+    const { key, uploadId } = req.query;
+    const partNumber = Number(req.query.partNumber);
 
-    if (
-      !Array.isArray(partNumbers) ||
-      !partNumbers.length ||
-      partNumbers.length > MAX_SIGN_BATCH ||
-      !partNumbers.every((n) => Number.isInteger(n) && n >= 1 && n <= MAX_PARTS)
-    ) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid part numbers');
+    if (!Number.isInteger(partNumber) || partNumber < 1 || partNumber > MAX_PARTS) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid part number');
+    }
+    if (!Buffer.isBuffer(req.body) || !req.body.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Empty file chunk');
     }
 
-    const urls = await Promise.all(
-      partNumbers.map(async (partNumber) => ({
-        partNumber,
-        url: await getSignedUrl(
-          r2,
-          new UploadPartCommand({
-            Bucket: R2_BUCKET,
-            Key: key,
-            UploadId: uploadId,
-            PartNumber: partNumber,
-          }),
-          { expiresIn: PART_URL_TTL_SECONDS }
-        ),
-      }))
+    const { ETag } = await r2.send(
+      new UploadPartCommand({
+        Bucket: R2_BUCKET,
+        Key: key,
+        UploadId: uploadId,
+        PartNumber: partNumber,
+        Body: req.body,
+      })
     );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Part URLs signed',
-      data: urls,
+      message: 'Chunk uploaded',
+      data: { partNumber, etag: ETag },
     });
   });
 
