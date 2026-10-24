@@ -10,6 +10,9 @@ export class LeadsService {
 
   async createLead(data) {
     if (data.meetingDate) {
+      /*
+      // Old slot-picker flow (commented out): fixed slots could only be booked once.
+      // Visitors now pick any time in their own timezone, so there is no slot to double-book.
       // Check if slot is already booked to prevent double-booking
       const existing = await this.prisma.lead.findFirst({
         where: {
@@ -22,6 +25,7 @@ export class LeadsService {
           'This meeting time slot has already been booked. Please choose another available time.'
         );
       }
+      */
 
       /*
       // =========================================================================
@@ -45,6 +49,8 @@ export class LeadsService {
     });
   }
 
+  /*
+  // Old slot-picker flow (commented out)
   async getBookedSlots(date) {
     const where = {
       meetingDate: {
@@ -68,6 +74,7 @@ export class LeadsService {
 
     return leads.map((l) => l.meetingDate).filter(Boolean);
   }
+  */
 
   async getAllLeads(paginationOptions, filters) {
     const { page, limit, skip, sortBy, sortOrder } = paginationOptions;

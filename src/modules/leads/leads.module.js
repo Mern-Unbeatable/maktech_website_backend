@@ -16,11 +16,14 @@ export class LeadsModule {
   }
 
   initializeRoutes() {
+    /*
+    // Old slot-picker flow (commented out)
     // Public route: Get booked slots
     this.router.get(
       '/booked-slots',
       this.leadsController.getBookedSlots
     );
+    */
 
     // Public route: Submit contact form / meeting booking
     this.router.post(

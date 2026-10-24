@@ -21,6 +21,8 @@ export class LeadsController {
     });
   });
 
+  /*
+  // Old slot-picker flow (commented out)
   getBookedSlots = catchAsync(async (req, res) => {
     const result = await this.leadsService.getBookedSlots(req.query.date);
     
@@ -31,6 +33,7 @@ export class LeadsController {
       data: result
     });
   });
+  */
 
   getAllLeads = catchAsync(async (req, res) => {
     const paginationOptions = calculatePagination(req.query);

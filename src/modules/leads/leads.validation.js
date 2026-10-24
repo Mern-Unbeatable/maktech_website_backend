@@ -1,5 +1,29 @@
 import { z } from 'zod';
 
+const isValidTimezone = (tz) => {
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: tz });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// Visitor picks any date/time in their own timezone; the frontend sends it as a UTC ISO string
+const meetingDateSchema = z
+  .string()
+  .refine((val) => !Number.isNaN(Date.parse(val)), {
+    message: 'Meeting date must be a valid date and time',
+  })
+  .refine((val) => Date.parse(val) > Date.now(), {
+    message: 'Meeting time must be in the future',
+  })
+  .transform((val) => new Date(val).toISOString());
+
+const timezoneSchema = z.string().refine(isValidTimezone, {
+  message: 'Invalid timezone',
+});
+
 export class LeadsValidation {
   static createLeadsSchema = z.object({
     fullName: z.string().min(2, 'Full name must be at least 2 characters'),
@@ -11,8 +35,11 @@ export class LeadsValidation {
     budget: z.number().optional().or(z.string().transform(val => val ? Number(val) : undefined)),
     industry: z.string().optional(),
     message: z.string().optional(),
-    meetingDate: z.string().optional(),
-    timezone: z.string().optional(),
+    // Old slot-picker flow (commented out)
+    // meetingDate: z.string().optional(),
+    // timezone: z.string().optional(),
+    meetingDate: meetingDateSchema.optional(),
+    timezone: timezoneSchema.optional(),
     meetingLink: z.string().optional(),
     
   });
