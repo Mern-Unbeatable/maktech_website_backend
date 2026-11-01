@@ -41,10 +41,8 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// No file size limits — any size file can be uploaded as desired
 export const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
-  limits: {
-    fileSize: 200 * 1024 * 1024 // 200 MB max
-  }
 });

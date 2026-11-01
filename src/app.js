@@ -40,8 +40,8 @@ class App {
         credentials: true,
       }),
     );
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(express.json({ limit: "500mb" }));
+    this.app.use(express.urlencoded({ extended: true, limit: "500mb" }));
 
     // Serve uploaded files statically
     this.app.use("/uploads", express.static("uploads"));
