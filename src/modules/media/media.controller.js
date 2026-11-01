@@ -17,7 +17,7 @@ import { ApiError } from '../../utils/ApiError.js';
 
 const PREFIX = 'media/';
 const MB = 1024 * 1024;
-const MIN_PART_SIZE = 16 * MB;
+const MIN_PART_SIZE = 8 * MB;
 export const MAX_PART_SIZE = 100 * MB;
 // S3/R2 multipart limit
 const MAX_PARTS = 10000;

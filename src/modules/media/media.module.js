@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import { auth } from '../../middlewares/auth.js';
 import { MediaController, MAX_PART_SIZE } from './media.controller.js';
 
-const rawChunk = express.raw({ type: 'application/octet-stream', limit: MAX_PART_SIZE });
+const rawChunk = express.raw({ type: () => true, limit: MAX_PART_SIZE });
 
 export class MediaModule {
   constructor() {
