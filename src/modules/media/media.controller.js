@@ -26,8 +26,13 @@ const VIDEO_EXTENSIONS = new Set([
   '.mp4', '.webm', '.mov', '.m4v', '.mkv', '.avi', '.ogv', '.3gp', '.wmv', '.mpeg', '.mpg',
 ]);
 
-const kindOf = (key) =>
-  VIDEO_EXTENSIONS.has(path.extname(key).toLowerCase()) ? 'video' : 'image';
+const kindOf = (key) => {
+  const ext = path.extname(key).toLowerCase();
+  if (VIDEO_EXTENSIONS.has(ext)) return 'video';
+  if (ext === '.pdf') return 'pdf';
+  return 'image';
+};
+
 
 const toItem = (key, size, lastModified) => ({
   key,
@@ -62,7 +67,7 @@ const assertUploadRef = ({ key, uploadId }) => {
 // SVG is excluded on purpose: it can carry inline scripts when opened from the public bucket URL
 const isAllowedType = (type) =>
   typeof type === 'string' &&
-  (type.startsWith('image/') || type.startsWith('video/')) &&
+  (type.startsWith('image/') || type.startsWith('video/') || type === 'application/pdf') &&
   type !== 'image/svg+xml';
 
 const safeExtension = (fileName) => {
@@ -80,7 +85,7 @@ export class MediaController {
     const size = Number(req.body?.size);
 
     if (!isAllowedType(contentType)) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Only image or video files are allowed');
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Only image, video, or PDF files are allowed');
     }
     if (!Number.isFinite(size) || size <= 0) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid file size');
